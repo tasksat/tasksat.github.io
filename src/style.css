@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #111;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+:root {
+  --page-x: clamp(16px, 3vw, 40px);
+}
+
+header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 24px var(--page-x);
+}
+
+main {
+  padding: 24px var(--page-x);
+}
+
+.site-title {
+  display: inline-block;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-weight: 400;
+}
+
+.pull-hint {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #777;
+  line-height: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.big-plain {
+  color: inherit;
+  margin: 0;
+  line-height: 0.8;
+  font-size: clamp(96px, 30vw, 360px);
+}
+
+.rubbery-text {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+}
+
+.rubbery-letter {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  white-space: pre;
+  will-change: transform;
+}
+
+.rubbery-text:active {
+  cursor: grabbing;
+}
+
+/* narrow screens */
+
+@media (max-width: 480px) {
+  .big-plain {
+    font-size: clamp(88px, 34vw, 180px);
+  }
+
+  .chatbot {
+    font-size: 14px;
+  }
+
+  .chat-log {
+    height: 240px;
+  }
+
+  .chat-log p {
+    max-width: 90%;
+  }
+
+  .chat-form {
+    flex-direction: column;
+  }
+
+  .chat-button {
+    width: 100%;
+  }
+}
