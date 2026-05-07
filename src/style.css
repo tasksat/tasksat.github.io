@@ -65,6 +65,41 @@ a {
   font-size: clamp(96px, 30vw, 360px);
 }
 
+.project-heading {
+  display: block;
+}
+
+.project-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.project-title.rubbery-text {
+  display: inline-block;
+}
+
+.project-title .rubbery-letter {
+  font: inherit;
+}
+
+.project-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.project-link {
+  color: #0066ff;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.project-link:hover {
+  text-decoration: underline;
+}
+
 .rubbery-text {
   position: relative;
   display: inline-block;
