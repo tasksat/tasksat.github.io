@@ -58,6 +58,10 @@ a {
   text-decoration: none;
 }
 
+.projects h2 {
+  margin: 0 0 18px;
+}
+
 .big-plain {
   color: inherit;
   margin: 0;
@@ -67,6 +71,16 @@ a {
 
 .project-heading {
   display: block;
+}
+
+.project-heading + .project-heading {
+  margin-top: 28px;
+}
+
+.project-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .project-title {
@@ -96,7 +110,22 @@ a {
   line-height: 1;
 }
 
-.project-link:hover {
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: #fff;
+  background: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.1;
+}
+
+.project-link-disabled {
+  color: #555;
+}
+
+.project-link[href]:hover {
   text-decoration: underline;
 }
 
