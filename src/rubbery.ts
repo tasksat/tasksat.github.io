@@ -18,6 +18,13 @@ const base_k = 1.0;
 const base_alpha = 0.2;
 const base_beta = 0.2;
 
+const init_pull_ratio = 3.0;
+const init_pull_ms = 400;
+
+function pullfunc(t: number): number {
+  return Math.pow(t, 1.5);
+}
+
 export function rubberfyText(el: HTMLElement): void {
   const text = (el.textContent ?? "").trim();
   el.textContent = "";
@@ -70,6 +77,11 @@ export function rubberfyText(el: HTMLElement): void {
   let dragging = false;
   let drag_id = -1;
   let pointer_x = 0;
+  let init_cancelled = false;
+
+  const init_started_at = performance.now();
+  const init_drag_id = letters.length - 1;
+  const init_pull_distance = w_total * init_pull_ratio;
 
   function localX(e: PointerEvent): number {
     return e.clientX - el.getBoundingClientRect().left;
@@ -89,7 +101,18 @@ export function rubberfyText(el: HTMLElement): void {
     return best;
   }
 
+  function addPullForce(
+    force: number[],
+    letter_id: number,
+    target_x: number,
+  ): void {
+    const p = letters[letter_id];
+    const cx = p.x + p.width * 0.5;
+    force[letter_id] += (target_x - cx) * alpha;
+  }
+
   el.addEventListener("pointerdown", (e) => {
+    init_cancelled = true;
     dragging = true;
     pointer_x = localX(e);
     drag_id = nearestLetterIndex(pointer_x);
@@ -115,6 +138,14 @@ export function rubberfyText(el: HTMLElement): void {
 
   function update(): void {
     const dt = 1 / substeps;
+    const init_elapsed = performance.now() - init_started_at;
+    const init_t = clamp(init_elapsed / init_pull_ms, 0, 1);
+    const init_active =
+      !init_cancelled && !dragging && init_elapsed < init_pull_ms;
+    const init_target_x =
+      letters[init_drag_id].x0 +
+      letters[init_drag_id].width * 0.5 +
+      init_pull_distance * pullfunc(init_t);
 
     for (let step = 0; step < substeps; step++) {
       const force = new Array<number>(letters.length).fill(0);
@@ -129,9 +160,9 @@ export function rubberfyText(el: HTMLElement): void {
       }
 
       if (dragging && drag_id !== -1) {
-        const p = letters[drag_id];
-        const cx = p.x + p.width * 0.5;
-        force[drag_id] += (pointer_x - cx) * alpha;
+        addPullForce(force, drag_id, pointer_x);
+      } else if (init_active) {
+        addPullForce(force, init_drag_id, init_target_x);
       }
 
       letters[0].x = letters[0].x0;
